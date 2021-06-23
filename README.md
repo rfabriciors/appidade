@@ -1,2 +1,2 @@
 # appidade
- rfabriciors/appidade:v1.2n
+ rfabriciors/appidade:v1.3n
