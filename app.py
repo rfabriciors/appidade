@@ -1,10 +1,16 @@
 import flask
 import os
+import time
 from flask import Flask, render_template, jsonify
 
 health = True
+ready = True
+
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+
+def current_milli_time():
+    return round(time.time() * 1000)
 
 @app.route('/')
 def index():
@@ -24,6 +30,26 @@ def sethealth():
     chopstick = {
         'health': health
     }
+    return jsonify(chopstick)
+
+@app.route('/ready')
+def readycheck():
+    if ready:
+        return render_template("health.html")
+    else:
+        return 'bad request!', 400
+
+@app.route('/setunready/<int:time_unv>')
+def setunready(time_unv):
+    timer = current_milli_time()
+    global ready
+    ready = False
+    chopstick = {
+        'ready': ready
+    }
+    while current_milli_time() < timer + time_unv*1000:
+        ready = False
+    ready = True
     return jsonify(chopstick)
 
 if __name__ == "__main__":
