@@ -1,10 +1,18 @@
-FROM nginx
-LABEL "vendor"="Taligent"
-LABEL version="v1.2n"
-LABEL description="Aplicação de cálculo de idade com JavaScript"
+FROM  python:3
+LABEL "vendor"="klv"
+LABEL version="v1.1"
+LABEL description="Aplicação de cálculo de idade com JavaScript e servidor python"
 LABEL maintainer="rfabriciors@gmail.com"
 
-COPY www/ /usr/share/nginx/html
+RUN apt-get update -y && \
+   apt-get install -y python python3-pip python-dev
 
+RUN pip install Flask
 
-EXPOSE 80
+WORKDIR /app
+
+COPY . .
+
+EXPOSE 5000
+
+CMD [ "python", "./app.py"]
